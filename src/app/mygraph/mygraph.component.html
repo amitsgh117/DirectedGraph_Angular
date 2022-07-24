@@ -1,0 +1,480 @@
+<div class="graph-wrapper">
+  <!-- <button class="change-button" (click)="onChangeGraph()">
+    change the labels
+  </button> -->
+  <!-- <ngx-graph
+    [nodeWidth]="150"
+    [nodeHeight]="100"
+    [layout]="layout"
+    [links]="links"
+    [nodes]="nodes"
+    [curve]="curve"
+    [draggingEnabled]="draggingEnabled"
+    [panningEnabled]="panningEnabled"
+    [enableZoom]="zoomEnabled"
+    [zoomSpeed]="zoomSpeed"
+    [minZoomLevel]="minZoomLevel"
+    [maxZoomLevel]="maxZoomLevel"
+    [panOnZoom]="panOnZoom"
+    [autoZoom]="autoZoom"
+    [autoCenter]="autoCenter"
+    [update$]="update$"
+    [center$]="center$"
+    [zoomToFit$]="zoomToFit$"
+  > -->
+  <ngx-graph
+  [nodeWidth]="150"
+  [nodeHeight]="100"
+  [layout]="layout"
+  [layoutSettings]="layoutSettings"
+  [links]="links"
+  [nodes]="nodes"
+  [draggingEnabled]="draggingEnabled"
+  [panningEnabled]="panningEnabled"
+  [enableZoom]="zoomEnabled"
+  [zoomSpeed]="zoomSpeed"
+  [minZoomLevel]="minZoomLevel"
+  [maxZoomLevel]="maxZoomLevel"
+  [panOnZoom]="panOnZoom"
+  [autoZoom]="autoZoom"
+  [autoCenter]="autoCenter"
+  [update$]="update$"
+  [center$]="center$"
+  [zoomToFit$]="zoomToFit$"
+  [animate]="true"
+  [animations]="true"
+  [zoomLevel] = "0.5"
+  [panToNode$]="panToNode$"
+
+>
+    <ng-template #defsTemplate>
+      <svg:marker
+        id="arrow"
+        viewBox="0 -5 10 10"
+        refX="8"
+        refY="0"
+        markerWidth="4"
+        markerHeight="4"
+        orient="auto"
+      >
+        <svg:path d="M0,-5L10,0L0,5" class="arrow-head" />
+      </svg:marker>
+    </ng-template>
+
+    <mat-menu #clickMenu="matMenu">
+      <button mat-menu-item>Details</button>
+      <!-- <button mat-menu-item>Add Line From Here</button>
+      <button mat-menu-item>Add Line to Here</button>
+      <button mat-menu-item>Delete</button> -->
+    </mat-menu>
+
+    <!-- <ng-template #nodeTemplate let-node>
+      <svg:g
+      *ngIf="node.data.nodeType === 'Milestone'"
+        [matTooltip]="
+          'Milestone: ' +
+          node.label 
+        "
+        [matTooltipClass]="'nodeTooltip'"
+        mat-button
+        [matMenuTriggerFor]="clickMenu"
+        class="node"
+      >
+        <svg:rect
+          class="node-rect"
+          [attr.width]="150"
+          [attr.height]="100"
+          [attr.rx]="5"
+          [attr.ry]="5"
+          [attr.fill]="nodeBackground"
+          stroke-width="1"
+        />
+        <svg:text
+          class="milestone-text"
+          dominant-baseline="middle"
+          text-anchor="middle"
+          [attr.fill]="milestoneText"
+          [attr.x]="150 / 2"
+          [attr.y]="100 / 2"
+          font-size="24"
+        >
+          {{ node.label | slice: 0:17 }}
+        </svg:text>
+      </svg:g>
+
+
+
+      <svg:g
+      *ngIf="node.data.nodeType === 'done'"
+        [matTooltip]="
+          'Type: ' +
+          node.data.node?.milestoneType +
+          '&#13;' +
+          'Label: ' +
+          node.data.node?.label
+        "
+        [matTooltipClass]="'nodeTooltip'"
+        mat-button
+        [matMenuTriggerFor]="clickMenu"
+        class="node"
+      >
+        <svg:rect
+          class="node-rect"
+          [attr.width]="150"
+          [attr.height]="100"
+          [attr.rx]="5"
+          [attr.ry]="5"
+          [attr.fill]="milestoneBackground"
+          stroke-width="1"
+        />
+        <svg:text
+          class="milestone-text"
+          dominant-baseline="middle"
+          text-anchor="middle"
+          [attr.fill]="milestoneText"
+          [attr.x]="150 / 2"
+          [attr.y]="100 / 2"
+          font-size="24"
+        >
+          {{ node.label | slice: 0:17 }}
+        </svg:text>
+      </svg:g>
+
+
+      <svg:g
+      *ngIf="node.data.nodeType === 'current'"
+        [matTooltip]="
+          'Current Milestone'
+        "
+        [matTooltipClass]="'nodeTooltip'"
+        mat-button
+        [matMenuTriggerFor]="clickMenu"
+        class="node"
+      >
+        <svg:rect
+          class="node-rect"
+          [attr.width]="150"
+          [attr.height]="100"
+          [attr.rx]="5"
+          [attr.ry]="5"
+          [attr.fill]="milestoneBackground"
+          stroke-width="10"
+        />
+        <svg:text
+          class="milestone-text"
+          dominant-baseline="middle"
+          text-anchor="middle"
+          [attr.fill]="milestoneText"
+          [attr.x]="150 / 2"
+          [attr.y]="100 / 2"
+          font-size="24"
+        >
+          {{ node.label | slice: 0:17 }}
+        </svg:text>
+      </svg:g> -->
+      <!-- <script>              
+        var app = angular.module('app', []);              
+        app.controller("appController", function ($scope) {        
+        $scope.nodes = [{"id":"MILESTONE_SCHEDULED","label":"SCHEDULED","type":"completed","info":[{"user_id":10,"time_stamp":"Fri Jun 3 17:00:00"}]},{"id":"MILESTONE_VISITED","label":"VISITED","type":"completed","info":[{"user_id":10,"time_stamp":"Fri Jun 3 17:00:00"}]}];    
+        }); 
+        </script> -->
+
+
+        <!-- <svg:g 
+        *ngIf="node.type === 'completed'"
+          [matTooltip]="
+            'INFO &#13;' + Hover(node.info) + '&#13;'
+          "
+          [matTooltipClass]="'tooltip'"
+          mat-button
+          [matMenuTriggerFor]="clickMenu"
+          class="node"
+          ngx-tooltip
+          [tooltipCssClass]="'tooltipX'"
+          [tooltipPlacement]="'bottom'"
+          [tooltipType]="'popover'"
+          [tooltipTitle]="'INFO &#13;' + Hover(node.info)"
+        > -->
+
+      <ng-template #nodeTemplate let-node>
+        <svg:g
+        
+        *ngIf="node.type === 'not completed'"
+          [matMenuTriggerFor]="clickMenu"
+          class="node"
+          ngx-tooltip
+          [tooltipCssClass]="'tooltipX'"
+          [tooltipPlacement]="'top'"
+          [tooltipType]="'tooltip'"
+          [tooltipTitle]="node.label"
+    >
+        >
+          <svg:rect
+            class="node-rect-1"
+            [attr.width]="150"
+            [attr.height]="100"
+            [attr.rx]="5"
+            [attr.ry]="5"
+            [attr.fill]="nodeBackground"
+            stroke-width="1"
+            opacity="0.3"
+            
+            
+          />
+          <svg:text
+            class="milestone-text"
+            dominant-baseline="middle"
+            text-anchor="middle"
+            [attr.fill]="milestoneText"
+            [attr.x]="150 / 2"
+            [attr.y]="100 / 2"
+            font-size="24"
+          >
+            {{ node.label | slice: 0:17 }}
+          </svg:text>
+        </svg:g>
+  
+  
+        <svg:g 
+        *ngIf="node.type === 'completed'"
+          [matMenuTriggerFor]="clickMenu"
+          class="node"
+          ngx-tooltip
+          [tooltipCssClass]="'tooltipX'"
+          [tooltipPlacement]="'bottom'"
+          [tooltipType]="'popover'"
+          [tooltipTitle]="node.label"
+        >
+          <defs>
+            <filter id="f1" >
+              <feOffset result="offOut" in="SourceAlpha" dx="10" dy="-10" />
+              <feBlend in="SourceGraphic" in2="offOut" mode="normal" />
+              <feGaussianBlur result="blurOut" in="offOut" stdDeviation="1" />
+              <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+            </filter>
+          </defs>
+          <svg:rect
+            class="node-rect-2"
+            [attr.width]="150"
+            [attr.height]="100"
+            [attr.rx]="5"
+            [attr.ry]="5"
+            [attr.fill]="milestoneBackground"
+            stroke-width="1"
+          />
+          <svg:text
+            class="milestone-text"
+            dominant-baseline="middle"
+            text-anchor="middle"
+            [attr.fill]="milestoneText"
+            [attr.x]="150 / 2"
+            [attr.y]="100 / 2"
+            font-size="24"
+          >
+            {{ node.label | slice: 0:17 }}
+          </svg:text>
+              
+                  
+        </svg:g>
+
+        <!-- [matTooltip]="
+        'Current Milestone ' + '\n' +
+        'INFO ' + Hover(node.info)
+      " -->
+      <!-- "{{Hover(node.info)}}" -->
+  
+        <svg:g
+        *ngIf="node.type === 'current'"
+        
+        [matMenuTriggerFor]="clickMenu"
+        class="node"
+        ngx-tooltip
+        [tooltipCssClass]="'tooltipX'"
+        [tooltipPlacement]="'bottom'"
+        [tooltipType]="'popover'"
+        [tooltipTitle]="node.label"
+
+        >
+          <svg:rect
+            class="node-rect"
+            [attr.width]="150"
+            [attr.height]="100"
+            [attr.rx]="5"
+            [attr.ry]="5"
+            style="fill:rgb(47, 255, 75)"
+            stroke-width="0"
+          />
+          <svg:text
+            class="milestone-text"
+            dominant-baseline="middle"
+            text-anchor="middle"
+            [attr.fill]="milestoneText"
+            [attr.x]="150 / 2"
+            [attr.y]="100 / 2"
+            font-size="20"
+            style="fill:black"
+          >
+            {{ node.label | slice: 0:17 }}
+          </svg:text>
+        </svg:g>
+  
+
+
+
+      <!-- <svg:g
+        *ngIf="node.data.node.nodeType === 'LinkPoint'"
+        class="node"
+        [matTooltip]="'Links to ' + node.data.node?.linkedId"
+        [matTooltipClass]="'nodeTooltip'"
+        mat-button
+        [matMenuTriggerFor]="clickMenu"
+      >
+        <svg:polygon
+          class="node-rect"
+          [attr.width]="150"
+          [attr.height]="100"
+          [attr.points]="linkPointDef"
+          [attr.fill]="milestoneBackground"
+        />
+        <svg:text
+          [attr.dominant-baseline]="textDominantBaseline"
+          [attr.text-anchor]="textAnchor"
+          [attr.startOffset]="textStartOffset"
+          [attr.fill]="milestoneText"
+          [attr.x]="150 / 2"
+          [attr.y]="100 / 2"
+        >
+          {{ node.label | slice: 0:17 }}
+        </svg:text>
+      </svg:g>
+
+      <svg:g
+        *ngIf="node.data.node.nodeType === 'Action'"
+        [matTooltip]="'Action type: ' + node.data.node?.actionType"
+        [matTooltipClass]="'nodeTooltip'"
+        mat-button
+        [matMenuTriggerFor]="clickMenu"
+        class="node"
+      >
+        <svg:ellipse
+          class="node-ellipse"
+          [attr.cx]="150 / 2"
+          [attr.cy]="100 / 2"
+          [attr.rx]="100"
+          [attr.ry]="50"
+          [attr.fill]="nodeBackground"
+        />
+        <svg:text
+          dominant-baseline="middle"
+          text-anchor="middle"
+          [attr.fill]="nodeText"
+          [attr.x]="150 / 2"
+          [attr.y]="100 / 2"
+        >
+          {{ node.label }}
+        </svg:text>
+      </svg:g> -->
+    </ng-template>
+
+    <!-- <ng-template #linkTemplate let-link>
+      <svg:g *ngIf="link.type === 'followed'" class="edge" (click)="onLineClick(link)" >
+        
+        <svg:path
+          class="line"
+          stroke-width="5"
+          marker-end="url(#arrow)"
+          stroke="blue"
+        ></svg:path>
+        <svg:text class="edge-label" text-anchor="middle">
+          <textPath
+            class="text-path"
+            [attr.fill]=""
+            [attr.href]="'#' + link.id"
+            [style.dominant-baseline]="link.dominantBaseline"
+            startOffset="50%"
+            font-size="24"
+          >
+            {{ link.label }}
+          </textPath>
+        </svg:text>
+      </svg:g>
+
+
+      <svg:g *ngIf="link.type === 'not followed'" class="edge" (click)="onLineClick(link)" >
+        
+        <svg:path
+          class="line"
+          stroke-width="5"
+          marker-end="url(#arrow)"
+          stroke="red"
+        ></svg:path>
+        <svg:text class="edge-label" text-anchor="middle">
+          <textPath
+            class="text-path"
+            [attr.fill]=""
+            [attr.href]="'#' + link.id"
+            [style.dominant-baseline]="link.dominantBaseline"
+            startOffset="50%"
+            font-size="24"
+          >
+            {{ link.label }}
+          </textPath>
+        </svg:text>
+      </svg:g>
+
+
+    </ng-template> -->
+
+
+    <ng-template #linkTemplate let-link>
+      <svg:g *ngIf="link.type === 'followed'" class="edge" (click)="onLineClick(link)" >
+        
+        <svg:path
+          class="line"
+          stroke-width="5"
+          length = "500"
+          marker-end="url(#arrow)"
+          stroke="blue"
+        ></svg:path>
+        <svg:text class="edge-label" text-anchor="middle">
+          <textPath
+            class="text-path"
+            [attr.fill]=""
+            [attr.href]="'#' + link.id"
+            [style.dominant-baseline]="link.dominantBaseline"
+            startOffset="50%"
+            font-size="24"
+          >
+            {{ link.label }}
+          </textPath>
+        </svg:text>
+      </svg:g>
+
+
+      <svg:g *ngIf="link.type === 'not followed'"  class="edge" (click)="onLineClick(link)" >
+        
+        <svg:path
+          class="line"
+          stroke-width="5"
+          marker-end="url(#arrow)"
+          stroke="red"
+          opacity="0.3"
+        ></svg:path>
+        <svg:text class="edge-label" text-anchor="middle">
+          <textPath
+            class="text-path"
+            [attr.fill]=""
+            [attr.href]="'#' + link.id"
+            [style.dominant-baseline]="link.dominantBaseline"
+            startOffset="50%"
+            font-size="24"
+          >
+            {{ link.label }}
+          </textPath>
+        </svg:text>
+      </svg:g>
+
+
+    </ng-template>
+  </ngx-graph>
+</div>
